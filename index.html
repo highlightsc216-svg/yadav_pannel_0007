@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Media Services Panel</title>
-    <!-- Font Awesome for Logos -->
+    <title>Dashboard Access Portal</title>
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         * {
@@ -23,17 +23,16 @@
             align-items: center;
             overflow-x: hidden;
             position: relative;
-            padding: 20px 0;
         }
 
-        /* Background Balloons Animation */
+        /* Ambient Animated Background Balloons */
         .balloon {
             position: absolute;
             width: 30px;
             height: 40px;
             border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
             bottom: -100px;
-            opacity: 0.2;
+            opacity: 0.15;
             animation: floatUp 12s linear infinite;
             z-index: 0;
         }
@@ -42,57 +41,18 @@
             100% { transform: translateY(-120vh) rotate(360deg); bottom: 100%; }
         }
 
-        /* Shared Container Styles */
-        .container {
+        /* Centered Glassmorphism Card Container */
+        .login-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 40px;
             border-radius: 20px;
             width: 90%;
-            max-width: 500px;
+            max-width: 420px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
             text-align: center;
             z-index: 10;
-            animation: fadeIn 0.5s ease-out;
-            display: none;
-        }
-
-        .container.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* Gradient Texts */
-        .gradient-text-insta {
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 2.3rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .gradient-text-fb {
-            background: linear-gradient(45deg, #00c6ff, #0072ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 2rem;
-            font-weight: 800;
-            margin-top: 25px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
         }
 
         .welcome-gradient {
@@ -104,23 +64,15 @@
             margin-bottom: 10px;
         }
 
-        .creator-gradient {
-            background: linear-gradient(45deg, #00ffcc, #00f0ff, #ff007f, #ffbe0b);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
-            animation: textShine 3s linear infinite;
+        .subtitle {
+            color: #aaa;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
         }
 
-        @keyframes textShine {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
-
-        /* Inputs and Buttons */
+        /* Form Input Field Styling */
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             text-align: left;
         }
 
@@ -131,9 +83,22 @@
             font-size: 0.9rem;
         }
 
-        input, select {
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            color: #ff007f;
+            font-size: 1rem;
+        }
+
+        input {
             width: 100%;
-            padding: 12px 15px;
+            padding: 14px 15px 14px 45px;
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 8px;
@@ -143,457 +108,128 @@
             transition: 0.3s;
         }
 
-        input:focus, select:focus {
-            border-color: #ff007f;
+        input:focus {
+            border-color: #00ffcc;
             background: rgba(255,255,255,0.15);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
         }
 
-        select option {
-            background: #1a1530;
-            color: #fff;
-        }
-
+        /* Login Action Button Layout */
         button {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(45deg, #ff007f, #7928ca);
+            background: linear-gradient(45deg, #00ffcc, #00b4db);
             border: none;
             border-radius: 8px;
-            color: white;
+            color: #0f0c20;
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
-            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
+            margin-top: 10px;
+            margin-bottom: 15px;
         }
 
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 0, 127, 0.5);
+            box-shadow: 0 6px 20px rgba(0, 255, 204, 0.5);
         }
 
-        .btn-cancel {
-            background: linear-gradient(45deg, #444, #222);
-            box-shadow: none;
-        }
-        .btn-cancel:hover {
-            background: linear-gradient(45deg, #555, #333);
-        }
-
-        .btn-fund {
-            background: linear-gradient(45deg, #00b4db, #0083b0);
-            box-shadow: 0 4px 15px rgba(0, 180, 219, 0.3);
-        }
-
-        .btn-admin {
-            background: linear-gradient(45deg, #f12711, #f5af19);
-            box-shadow: 0 4px 15px rgba(241, 39, 17, 0.3);
-        }
-
-        /* Service Lists */
-        .service-list {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
-            text-align: left;
-            margin-bottom: 15px;
-        }
-
-        .service-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .service-item:last-child {
-            border-bottom: none;
-        }
-
-        /* Calculator Summary */
-        .live-calculator {
-            background: rgba(0, 255, 204, 0.1);
-            border: 1px dashed rgba(0, 255, 204, 0.4);
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.1rem;
-            font-weight: bold;
-        }
-        .live-calculator span {
-            color: #00ffcc;
-            font-size: 1.4rem;
-        }
-
-        /* Footer Credits */
+        /* Footer Copyright Block */
         .credits {
             font-size: 0.85rem;
             color: #aaa;
-            margin-top: 15px;
+            margin-top: 20px;
             border-top: 1px solid rgba(255,255,255,0.1);
             padding-top: 15px;
             line-height: 1.6;
         }
-        .insta-link {
-            color: #ff007f;
+
+        .creator-gradient {
+            background: linear-gradient(45deg, #00ffcc, #00f0ff, #ff007f, #ffbe0b);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            animation: textShine 3s linear infinite;
             text-decoration: none;
-            font-weight: 600;
-            display: inline-block;
-        }
-        .insta-link:hover {
-            color: #00ffcc;
         }
 
-        /* QR Code Container */
-        .qr-box {
-            width: 230px;
-            background: white;
-            margin: 20px auto;
-            border-radius: 15px;
-            padding: 10px;
-            border: 4px solid #00b4db;
-            box-shadow: 0 10px 25px rgba(0, 180, 219, 0.4);
-        }
-        .qr-box img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            display: block;
-        }
-
-        /* Admin Log Table styles */
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 0.85rem;
-            background: rgba(0,0,0,0.2);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .admin-table th, .admin-table td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .admin-table th {
-            background: rgba(255,255,255,0.1);
-            color: #00ffcc;
-        }
-        .empty-text {
-            color: #777;
-            padding: 15px;
-            font-style: italic;
-        }
-
-        /* Toast System */
-        .popup {
-            position: fixed;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(45deg, #00ffcc, #0072ff);
-            color: #000;
-            padding: 15px 30px;
-            border-radius: 30px;
-            font-weight: bold;
-            box-shadow: 0 10px 25px rgba(0,255,204,0.4);
-            transition: 0.5s ease-in-out;
-            z-index: 100;
-        }
-        .popup.show {
-            top: 30px;
+        @keyframes textShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Popup Notification Box -->
-    <div id="popupBox" class="popup">🔥 Notification Triggered!</div>
+    <!-- Dynamic Animated Background Layer Elements -->
+    <div id="balloon-container"></div>
 
-    <!-- 🔐 SECTION 1: USERNAME/PASSWORD LOGIN PAGE -->
-    <div id="pageLogin" class="container active">
-        <h1 class="gradient-text-insta">
-            <i class="fas fa-lock"></i> Secure Entry Portal
-        </h1>
-        <p style="color: #bbb; font-size: 0.85rem; margin-bottom: 20px;">
-            By: <a href="https://instagram.com" target="_blank" class="insta-link">@piyush_gupta_701</a> & <a href="https://instagram.com" target="_blank" class="insta-link">@its_rajeshyadav_07</a>
-        </p>
-        <form id="loginForm" onsubmit="handleLogin(event)">
+    <!-- MAIN ACCESS GATE CARD -->
+    <div class="login-card">
+        <h1 class="welcome-gradient">Secure Login</h1>
+        <p class="subtitle">Enter credentials to open your client workstation</p>
+        
+        <form onsubmit="verifySimulationAccess(event)">
             <div class="input-group">
-                <label><i class="fas fa-user"></i> Enter Name / Login ID</label>
-                <input type="text" id="username" required placeholder="Enter username...">
+                <label for="username">Username / Email ID</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="Type account user token..." required>
+                </div>
             </div>
+
             <div class="input-group">
-                <label><i class="fas fa-key"></i> Set Your Password</label>
-                <input type="password" id="password" required placeholder="Enter secure password...">
+                <label for="password">Account Security Password</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Type personal key phrase..." required>
+                </div>
             </div>
-            <button type="submit">Access Dashboard 🚀</button>
+
+            <button type="submit"><i class="fas fa-sign-in-alt"></i> Authenticate Account</button>
         </form>
-        <button class="btn-admin" onclick="showPage('pageAdmin')"><i class="fas fa-user-shield"></i> Switch to Admin View</button>
-        <p style="font-size: 0.8rem; color: #888; margin-top: 15px;">
-            Created by <span class="creator-gradient">Piyush & Rajesh yadav</span>
-        </p>
-    </div>
-
-    <!-- 📦 SECTION 2: ORDER FORM & SERVICE DASHBOARD -->
-    <div id="pageDashboard" class="container">
-        <h2 class="welcome-gradient">Welcome to website 🥳🌟</h2>
-        <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 15px;">
-            Created by <span class="creator-gradient" style="font-size: 1.1rem;">Piyush & Rajesh yadav</span>
-        </p>
-        <p style="color: #ddd; margin-bottom: 20px;">User Active: <span id="displayUser" style="color: #ff007f; font-weight: bold;"></span></p>
-
-        <!-- Pricing Matrices -->
-        <h3 class="gradient-text-insta" style="font-size: 1.3rem; margin-bottom: 10px;">
-            <i class="fab fa-instagram"></i> Instagram Rates 📈
-        </h3>
-        <div class="service-list">
-            <div class="service-item"><span>👁️ 1000 Views</span> <strong>₹2</strong></div>
-            <div class="service-item"><span>❤️ 1000 Likes</span> <strong>₹28</strong></div>
-            <div class="service-item"><span>👤 1000 Followers</span> <strong>₹110</strong></div>
-        </div>
-
-        <h3 class="gradient-text-fb" style="font-size: 1.3rem; margin-bottom: 10px;">
-            <i class="fab fa-facebook"></i> Facebook Rates 📈
-        </h3>
-        <div class="service-list">
-            <div class="service-item"><span>👁️ 1000 Views</span> <strong>₹15</strong></div>
-            <div class="service-item"><span>❤️ 1000 Likes</span> <strong>₹30</strong></div>
-            <div class="service-item"><span>👤 1000 Followers</span> <strong>₹100</strong></div>
-        </div>
-
-        <!-- Order Form Fields -->
-        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; margin-top: 20px;">
-            <h3 style="color: #00ffcc; font-size: 1.2rem; margin-bottom: 15px; text-align: left;"><i class="fas fa-shopping-basket"></i> Place New Order</h3>
-            
-            <div class="input-group">
-                <label>Choose Platform Plan</label>
-                <select id="serviceSelect" onchange="calculatePrice()">
-                    <option value="2" data-name="Instagram 1000 Views">Instagram 1000 Views - ₹2</option>
-                    <option value="28" data-name="Instagram 1000 Likes">Instagram 1000 Likes - ₹28</option>
-                    <option value="110" data-name="Instagram 1000 Followers">Instagram 1000 Followers - ₹110</option>
-                    <option value="15" data-name="Facebook 1000 Views">Facebook 1000 Views - ₹15</option>
-                    <option value="30" data-name="Facebook 1000 Likes">Facebook 1000 Likes - ₹30</option>
-                    <option value="100" data-name="Facebook 1000 Followers">Facebook 1000 Followers - ₹100</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Paste Video or Profile Link 🔗</label>
-                <input type="url" id="serviceLink" placeholder="https://instagram.com..." required>
-            </div>
-
-            <div class="input-group">
-                <label>Enter Quantity Multiplier (per 1000)</label>
-                <input type="number" id="buyAmount" value="1" min="1" oninput="calculatePrice()" placeholder="e.g. 5 for 5000 items">
-            </div>
-
-            <div class="live-calculator">
-                Total Cost Summary: <span id="totalPriceDisplay">₹2</span> 💰
-            </div>
-
-            <button onclick="triggerOrderPopup()">Buy Service 🛒</button>
-            <button class="btn-fund" onclick="showPage('pageFund')">💳 Add Fund Panel</button>
-            <button class="btn-cancel" onclick="logout()">Cancel / Logout ❌</button>
-        </div>
 
         <div class="credits">
-            By <span class="creator-gradient">Piyush & Rajesh yadav</span> 😎🤝
-            <span class="insta-handles">
-                <a href="https://instagram.com" target="_blank" class="insta-link">@piyush_gupta_701</a> | 
-                <a href="https://instagram.com" target="_blank" class="insta-link">@official_piyush_gupta_701</a><br>
-                <a href="https://instagram.com" target="_blank" class="insta-link">@its_rajeshyadav_07</a>
-            </span>
+            Designed & Maintained By: <br>
+            <a href="https://instagram.com" target="_blank" class="creator-gradient">@piyush_gupta_701</a> & 
+            <a href="https://instagram.com" target="_blank" class="creator-gradient">@its_rajeshyadav_0007</a>
         </div>
-    </div>
-
-    <!-- 💳 SECTION 3: DYNAMIC PAYMENT PAGE -->
-    <div id="pageFund" class="container">
-        <h2 class="welcome-gradient" style="font-size: 1.8rem;"><i class="fas fa-credit-card"></i> Deposit Portal</h2>
-        <p style="font-size: 0.9rem; color: #ccc;">Scan standard secure gateway code below to pay</p>
-        
-        <!-- Interactive Linked Image Layout -->
-        <div class="qr-box">
-            <img src="https://googleusercontent.com" alt="Priti Kumari UPI QR Gateway">
-        </div>
-
-        <div class="input-group">
-            <label>Provide 12-Digit Reference UTR</label>
-            <input type="text" id="utrInput" placeholder="Enter bank reference number">
-        </div>
-        <div class="input-group">
-            <label>Verify Transferred Amount (₹)</label>
-            <input type="number" id="fundAmount" placeholder="Amount transferred...">
-        </div>
-
-        <button onclick="submitFund()">Submit Transaction Check 🛡️</button>
-        <button class="btn-cancel" onclick="showPage('pageDashboard')">Return to Form 🔙</button>
-    </div>
-
-    <!-- 💻 SECTION 4: ADMIN DASHBOARD PANEL -->
-    <div id="pageAdmin" class="container">
-        <h2 style="color: #ff007f; font-size: 1.8rem; margin-bottom: 5px;"><i class="fas fa-user-shield"></i> Admin Panel</h2>
-        <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 20px;">Order Flow Management Log</p>
-        
-        <h3 style="color: #00ffcc; font-size: 1rem; text-align: left; margin-bottom: 5px;">📦 Client Orders Submitted</h3>
-        <div style="overflow-x:auto;">
-            <table class="admin-table">
-                <thead>
-                    <tr><th>User</th><th>Service</th><th>Qty</th><th>Link</th></tr>
-                </thead>
-                <tbody id="adminOrdersLog"><tr id="noOrdersRow"><td colspan="4" class="empty-text">No service requests processed yet</td></tr></tbody>
-            </table>
-        </div>
-
-        <h3 style="color: #ffbe0b; font-size: 1rem; text-align: left; margin-top: 25px; margin-bottom: 5px;">💳 Fund Deposit Logs</h3>
-        <div style="overflow-x:auto;">
-            <table class="admin-table">
-                <thead>
-                    <tr><th>User</th><th>UTR ID</th><th>Amount</th></tr>
-                </thead>
-                <tbody id="adminFundsLog"><tr id="noFundsRow"><td colspan="3" class="empty-text">No reference receipts filed</td></tr></tbody>
-            </table>
-        </div>
-
-        <button class="btn-cancel" style="margin-top: 25px;" onclick="showPage('pageLogin')">Back to Portal Login 🔙</button>
     </div>
 
     <script>
-        // Global variables to hold active tracking states locally
-        let activeUser = "Guest";
-        const ordersDatabase = [];
-        const depositsDatabase = [];
-
-        // Background Floating Bubble Generator Array Loop
-        const colors = ['#ff007f', '#00ffcc', '#0072ff', '#ffbe0b', '#ff0055'];
-        for (let i = 0; i < 15; i++) {
-            let balloon = document.createElement('div');
-            balloon.classList.add('balloon');
-            balloon.style.left = Math.random() * 100 + 'vw';
-            balloon.style.animationDelay = Math.random() * 8 + 's';
-            balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            document.body.appendChild(balloon);
-        }
-
-        // View Router Controller Switching Utilities
-        function showPage(pageId) {
-            document.querySelectorAll('.container').forEach(box => box.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            window.scrollTo(0,0);
-        }
-
-        // Live Cost Matrix Calculator
-        function calculatePrice() {
-            const baseRate = parseInt(document.getElementById('serviceSelect').value) || 0;
-            const quantityMultiplier = parseInt(document.getElementById('buyAmount').value) || 0;
-            const finalPrice = baseRate * quantityMultiplier;
-            document.getElementById('totalPriceDisplay').innerText = "₹" + finalPrice;
-            return finalPrice;
-        }
-
-        // Authentication Submission Handler
-        function handleLogin(event) {
-            event.preventDefault();
-            activeUser = document.getElementById('username').value.trim() || "User";
-            document.getElementById('displayUser').innerText = activeUser;
-            showPage('pageDashboard');
-            showPopup("🔐 Authorized Successfully! Welcome " + activeUser);
-            calculatePrice();
-        }
-
-        // Logout Clear Command
-        function logout() {
-            document.getElementById('loginForm').reset();
-            document.getElementById('serviceLink').value = '';
-            showPage('pageLogin');
-            showPopup("👋 Session closed cleanly");
-        }
-
-        // Custom notification banner constructor
-        function showPopup(text) {
-            const popup = document.getElementById('popupBox');
-            popup.innerText = text;
-            popup.classList.add('show');
-            setTimeout(() => popup.classList.remove('show'), 3000);
-        }
-
-        // 📦 Form Processing Submission
-        function triggerOrderPopup() {
-            const link = document.getElementById('serviceLink').value.trim();
-            const qty = parseInt(document.getElementById('buyAmount').value) || 0;
-            const selectElement = document.getElementById('serviceSelect');
-            const serviceName = selectElement.options[selectElement.selectedIndex].getAttribute('data-name');
-            const totalCost = calculatePrice();
-            const numericalAmount = qty * 1000;
-
-            if(!link) {
-                showPopup("❌ Please specify a targeting URL link first!");
-                return;
-            }
-
-            // Append structured object payload to mock tracking database array
-            ordersDatabase.push({ user: activeUser, service: serviceName, quantity: numericalAmount, url: link });
-            updateAdminDashboardLogs();
-
-            showPopup(`📦 Order Saved! ${numericalAmount} views/likes en route for ₹${totalCost}`);
-            document.getElementById('serviceLink').value = ''; // Reset path input field array string
-        }
-
-        // 💳 Receipts Processing Submission
-        function submitFund() {
-            const utr = document.getElementById('utrInput').value.trim();
-            const cashAmount = document.getElementById('fundAmount').value.trim();
-
-            if(!utr || !cashAmount) {
-                showPopup("❌ Please complete both transaction fields!");
-                return;
-            }
-
-            // Append structured object validation arrays to tracking system logs
-            depositsDatabase.push({ user: activeUser, utrNumber: utr, cost: cashAmount });
-            updateAdminDashboardLogs();
-
-            showPopup("⏳ UTR verification logged! Admin review pending. 👍");
-            document.getElementById('utrInput').value = '';
-            document.getElementById('fundAmount').value = '';
-            setTimeout(() => showPage('pageDashboard'), 1500);
-        }
-
-        // Render runtime elements down into interactive management dashboard grids
-        function updateAdminDashboardLogs() {
-            const ordersBody = document.getElementById('adminOrdersLog');
-            const fundsBody = document.getElementById('adminFundsLog');
-
-            // Render updated rows for user requests
-            if (ordersDatabase.length > 0) {
-                ordersBody.innerHTML = '';
-                ordersDatabase.forEach(item => {
-                    let row = `<tr>
-                        <td><strong>${item.user}</strong></td>
-                        <td>${item.service}</td>
-                        <td>${item.quantity}</td>
-                        <td><a href="${item.url}" target="_blank" style="color:#00ffcc; text-decoration:none;">View Link 🔗</a></td>
-                    </tr>`;
-                    ordersBody.innerHTML += row;
-                });
-            }
-
-            // Render updated logs for fund receipts
-            if (depositsDatabase.length > 0) {
-                fundsBody.innerHTML = '';
-                depositsDatabase.forEach(receipt => {
-                    let row = `<tr>
-                        <td><strong>${receipt.user}</strong></td>
-                        <td><span style="color:#ffbe0b;">${receipt.utrNumber}</span></td>
-                        <td>₹${receipt.cost}</td>
-                    </tr>`;
-                    fundsBody.innerHTML += row;
-                });
+        // Runtime visual asset initialization loops
+        function generateAmbientBalloons() {
+            const containerNode = document.getElementById('balloon-container');
+            const visualColors = ['#ff007f', '#7928ca', '#00ffcc', '#ffbe0b', '#00c6ff'];
+            
+            for(let i = 0; i < 12; i++) {
+                const balloonInstance = document.createElement('div');
+                balloonInstance.classList.add('balloon');
+                
+                balloonInstance.style.left = Math.random() * 100 + 'vw';
+                balloonInstance.style.animationDelay = Math.random() * 6 + 's';
+                balloonInstance.style.animationDuration = 7 + Math.random() * 8 + 's';
+                balloonInstance.style.background = visualColors[Math.floor(Math.random() * visualColors.length)];
+                
+                containerNode.appendChild(balloonInstance);
             }
         }
+
+        // Handle simulation alert validation triggers
+        function verifySimulationAccess(eventContext) {
+            eventContext.preventDefault();
+            const userFieldValue = document.getElementById('username').value;
+            
+            alert(`Authentication Request Logged!\nUser: ${userFieldValue}\n\nConnection established successfully.`);
+        }
+
+        // Mount setup lifecycle bindings
+        window.addEventListener('DOMContentLoaded', () => {
+            generateAmbientBalloons();
+        });
     </script>
 </body>
 </html>
