@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -111,7 +111,6 @@
             -webkit-text-fill-color: transparent;
             font-weight: 800;
             animation: textShine 3s linear infinite;
-            text-decoration: none;
         }
 
         @keyframes textShine {
@@ -174,15 +173,6 @@
             box-shadow: 0 6px 20px rgba(255, 0, 127, 0.5);
         }
 
-        .btn-enter {
-            background: linear-gradient(45deg, #00ffcc, #00b4db);
-            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
-            color: #0f0c20;
-        }
-        .btn-enter:hover {
-            box-shadow: 0 6px 20px rgba(0, 255, 204, 0.5);
-        }
-
         .btn-cancel {
             background: linear-gradient(45deg, #444, #222);
             box-shadow: none;
@@ -194,12 +184,6 @@
         .btn-fund {
             background: linear-gradient(45deg, #00b4db, #0083b0);
             box-shadow: 0 4px 15px rgba(0, 180, 219, 0.3);
-        }
-
-        .btn-submit-payment {
-            background: linear-gradient(45deg, #11998e, #38ef7d);
-            box-shadow: 0 4px 15px rgba(56, 239, 125, 0.3);
-            margin-top: 10px;
         }
 
         .btn-admin {
@@ -292,291 +276,324 @@
         .admin-table th, .admin-table td {
             padding: 10px;
             text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .admin-table th {
             background: rgba(255,255,255,0.1);
             color: #00ffcc;
         }
+        .empty-text {
+            color: #777;
+            padding: 15px;
+            font-style: italic;
+        }
+
+        /* Toast System */
+        .popup {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #00ffcc, #0072ff);
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 10px 25px rgba(0,255,204,0.4);
+            transition: 0.5s ease-in-out;
+            z-index: 100;
+        }
+        .popup.show {
+            top: 30px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Dynamic Background Balloons Setup -->
-    <div id="balloon-container"></div>
+    <!-- Popup Notification Box -->
+    <div id="popupBox" class="popup">🔥 Notification Triggered!</div>
 
-    <!-- GATEWAY LOGIN PANEL CONTROLLER -->
-    <div id="login-panel" class="container active">
-        <h1 class="welcome-gradient">User Authentication</h1>
-        <p style="color: #aaa; margin-bottom: 25px;">Please sign in to your dashboard account panel</p>
-        
-        <form id="login-form" onsubmit="handleLoginSubmission(event)">
+    <!-- 🔐 SECTION 1: USERNAME/PASSWORD LOGIN PAGE -->
+    <div id="pageLogin" class="container active">
+        <h1 class="gradient-text-insta">
+            <i class="fas fa-lock"></i> Secure Entry Portal
+        </h1>
+        <p style="color: #bbb; font-size: 0.85rem; margin-bottom: 20px;">
+            By: <a href="https://instagram.com" target="_blank" class="insta-link">@piyush_gupta_701</a> & <a href="https://instagram.com" target="_blank" class="insta-link">@its_rajeshyadav_07</a>
+        </p>
+        <form id="loginForm" onsubmit="handleLogin(event)">
             <div class="input-group">
-                <label for="login-username">Enter Name</label>
-                <input type="text" id="login-username" placeholder="Type your registered name..." required>
+                <label><i class="fas fa-user"></i> Enter Name / Login ID</label>
+                <input type="text" id="username" required placeholder="Enter username...">
             </div>
-
             <div class="input-group">
-                <label for="login-password">Set Password</label>
-                <input type="password" id="login-password" placeholder="Create or enter password..." required>
+                <label><i class="fas fa-key"></i> Set Your Password</label>
+                <input type="password" id="password" required placeholder="Enter secure password...">
             </div>
-
-            <button type="submit" class="btn-enter"><i class="fas fa-sign-in-alt"></i> Enter Panel</button>
+            <button type="submit">Access Dashboard 🚀</button>
         </form>
-
-        <div class="credits">
-            Designed & Maintained By: <br>
-            <a href="https://instagram.com" target="_blank" class="creator-gradient">@piyush_gupta_701</a> & 
-            <a href="https://instagram.com" target="_blank" class="creator-gradient">@its_rajeshyadav_0007</a>
-        </div>
+        <button class="btn-admin" onclick="showPage('pageAdmin')"><i class="fas fa-user-shield"></i> Switch to Admin View</button>
+        <p style="font-size: 0.8rem; color: #888; margin-top: 15px;">
+            Created by <span class="creator-gradient">Piyush & Rajesh yadav</span>
+        </p>
     </div>
 
-    <!-- MAIN HOME / PANEL CONTAINER -->
-    <div id="main-panel" class="container">
-        <h1 class="welcome-gradient">Welcome To Panel</h1>
-        <p style="color: #aaa; margin-bottom: 25px;">Fastest & Most Reliable Social Media Boosters</p>
+    <!-- 📦 SECTION 2: ORDER FORM & SERVICE DASHBOARD -->
+    <div id="pageDashboard" class="container">
+        <h2 class="welcome-gradient">Welcome to website 🥳🌟</h2>
+        <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 15px;">
+            Created by <span class="creator-gradient" style="font-size: 1.1rem;">Piyush & Rajesh yadav</span>
+        </p>
+        <p style="color: #ddd; margin-bottom: 20px;">User Active: <span id="displayUser" style="color: #ff007f; font-weight: bold;"></span></p>
 
-        <!-- Services Presentation Area -->
-        <h2 class="gradient-text-insta"><i class="fab fa-instagram"></i> Instagram Services</h2>
+        <!-- Pricing Matrices -->
+        <h3 class="gradient-text-insta" style="font-size: 1.3rem; margin-bottom: 10px;">
+            <i class="fab fa-instagram"></i> Instagram Rates 📈
+        </h3>
         <div class="service-list">
-            <div class="service-item"><span><i class="fas fa-user-plus text-insta"></i> Followers</span> <strong>₹20 / 1K</strong></div>
-            <div class="service-item"><span><i class="fas fa-heart text-insta"></i> Likes</span> <strong>₹5 / 1K</strong></div>
-            <div class="service-item"><span><i class="fas fa-eye text-insta"></i> Views</span> <strong>₹2 / 1K</strong></div>
+            <div class="service-item"><span>👁️ 1000 Views</span> <strong>₹2</strong></div>
+            <div class="service-item"><span>❤️ 1000 Likes</span> <strong>₹28</strong></div>
+            <div class="service-item"><span>👤 1000 Followers</span> <strong>₹110</strong></div>
         </div>
 
-        <h2 class="gradient-text-fb"><i class="fab fa-facebook"></i> Facebook Services</h2>
+        <h3 class="gradient-text-fb" style="font-size: 1.3rem; margin-bottom: 10px;">
+            <i class="fab fa-facebook"></i> Facebook Rates 📈
+        </h3>
         <div class="service-list">
-            <div class="service-item"><span><i class="fas fa-user-friends text-fb"></i> Followers</span> <strong>₹30 / 1K</strong></div>
-            <div class="service-item"><span><i class="fas fa-thumbs-up text-fb"></i> Likes</span> <strong>₹10 / 1K</strong></div>
+            <div class="service-item"><span>👁️ 1000 Views</span> <strong>₹15</strong></div>
+            <div class="service-item"><span>❤️ 1000 Likes</span> <strong>₹30</strong></div>
+            <div class="service-item"><span>👤 1000 Followers</span> <strong>₹100</strong></div>
         </div>
 
-        <!-- Order Workflow Form Element -->
-        <form id="order-form" onsubmit="handleOrderSubmission(event)">
+        <!-- Order Form Fields -->
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; margin-top: 20px;">
+            <h3 style="color: #00ffcc; font-size: 1.2rem; margin-bottom: 15px; text-align: left;"><i class="fas fa-shopping-basket"></i> Place New Order</h3>
+            
             <div class="input-group">
-                <label for="service-select">Select Your Service Profile</label>
-                <select id="service-select" required onchange="calculateLivePrice()">
-                    <option value="" disabled selected>-- Choose Service Here --</option>
-                    <option value="insta_followers" data-price="20">Instagram Followers (₹20/1K)</option>
-                    <option value="insta_likes" data-price="5">Instagram Likes (₹5/1K)</option>
-                    <option value="insta_views" data-price="2">Instagram Views (₹2/1K)</option>
-                    <option value="fb_followers" data-price="30">Facebook Followers (₹30/1K)</option>
-                    <option value="fb_likes" data-price="10">Facebook Likes (₹10/1K)</option>
+                <label>Choose Platform Plan</label>
+                <select id="serviceSelect" onchange="calculatePrice()">
+                    <option value="2" data-name="Instagram 1000 Views">Instagram 1000 Views - ₹2</option>
+                    <option value="28" data-name="Instagram 1000 Likes">Instagram 1000 Likes - ₹28</option>
+                    <option value="110" data-name="Instagram 1000 Followers">Instagram 1000 Followers - ₹110</option>
+                    <option value="15" data-name="Facebook 1000 Views">Facebook 1000 Views - ₹15</option>
+                    <option value="30" data-name="Facebook 1000 Likes">Facebook 1000 Likes - ₹30</option>
+                    <option value="100" data-name="Facebook 1000 Followers">Facebook 1000 Followers - ₹100</option>
                 </select>
             </div>
 
             <div class="input-group">
-                <label for="target-link">Target Profile / Post URL Link</label>
-                <input type="url" id="target-link" placeholder="https://instagram.com..." required>
+                <label>Paste Video or Profile Link 🔗</label>
+                <input type="url" id="serviceLink" placeholder="https://instagram.com..." required>
             </div>
 
             <div class="input-group">
-                <label for="quantity-input">Quantity Count Amount</label>
-                <input type="number" id="quantity-input" min="100" placeholder="Minimum quantity: 100" required oninput="calculateLivePrice()">
+                <label>Enter Quantity Multiplier (per 1000)</label>
+                <input type="number" id="buyAmount" value="1" min="1" oninput="calculatePrice()" placeholder="e.g. 5 for 5000 items">
             </div>
 
-            <!-- Dynamic Live Cost Estimate Display -->
             <div class="live-calculator">
-                Estimated Order Cost: <span>₹<span id="live-cost">0.00</span></span>
+                Total Cost Summary: <span id="totalPriceDisplay">₹2</span> 💰
             </div>
 
-            <button type="submit"><i class="fas fa-rocket"></i> Launch Placement Order</button>
-        </form>
-
-        <button class="btn-fund" onclick="switchView('payment-panel')"><i class="fas fa-wallet"></i> Add Wallet Credits</button>
-        <button class="btn-admin" onclick="switchView('admin-panel')"><i class="fas fa-user-shield"></i> Administration Console</button>
+            <button onclick="triggerOrderPopup()">Buy Service 🛒</button>
+            <button class="btn-fund" onclick="showPage('pageFund')">💳 Add Fund Panel</button>
+            <button class="btn-cancel" onclick="logout()">Cancel / Logout ❌</button>
+        </div>
 
         <div class="credits">
-            Designed & Maintained By: <br>
-            <a href="https://instagram.com" target="_blank" class="creator-gradient">@piyush_gupta_701</a> & 
-            <a href="https://instagram.com" target="_blank" class="creator-gradient">@its_rajeshyadav_0007</a>
+            By <span class="creator-gradient">Piyush & Rajesh yadav</span> 😎🤝
+            <span class="insta-handles">
+                <a href="https://instagram.com" target="_blank" class="insta-link">@piyush_gupta_701</a> | 
+                <a href="https://instagram.com" target="_blank" class="insta-link">@official_piyush_gupta_701</a><br>
+                <a href="https://instagram.com" target="_blank" class="insta-link">@its_rajeshyadav_07</a>
+            </span>
         </div>
     </div>
 
-    <!-- PAYMENT GATEWAY ADD CREDITS PANEL -->
-    <div id="payment-panel" class="container">
-        <h1 class="welcome-gradient" style="font-size: 2rem;">Add Wallet Funds</h1>
-        <p style="color: #aaa; margin-bottom: 15px;">Scan QR code below via UPI Apps (PhonePe, GPay, Paytm) to deposit credit funds</p>
-
+    <!-- 💳 SECTION 3: DYNAMIC PAYMENT PAGE -->
+    <div id="pageFund" class="container">
+        <h2 class="welcome-gradient" style="font-size: 1.8rem;"><i class="fas fa-credit-card"></i> Deposit Portal</h2>
+        <p style="font-size: 0.9rem; color: #ccc;">Scan standard secure gateway code below to pay</p>
+        
+        <!-- Interactive Linked Image Layout -->
         <div class="qr-box">
-            <!-- Replace 'YOUR_UPI_ID_HERE@upi' below with your actual UPI configuration ID -->
-            <img src="https://qrserver.com" alt="Payment Processing QR Code Badge">
+            <img src="https://googleusercontent.com" alt="Priti Kumari UPI QR Gateway">
         </div>
 
-        <!-- UTR and Amount Verification Submission Fields -->
-        <form id="payment-verification-form" onsubmit="handlePaymentSubmission(event)">
-            <div class="input-group">
-                <label for="payment-amount">Type Amount Paid (₹)</label>
-                <input type="number" id="payment-amount" min="1" placeholder="Enter amount paid" required>
-            </div>
-            
-            <div class="input-group">
-                <label for="utr-number">Enter UTR / Transaction ID Reference</label>
-                <input type="text" id="utr-number" placeholder="12-digit UTR number" minlength="12" maxlength="12" required>
-            </div>
+        <div class="input-group">
+            <label>Provide 12-Digit Reference UTR</label>
+            <input type="text" id="utrInput" placeholder="Enter bank reference number">
+        </div>
+        <div class="input-group">
+            <label>Verify Transferred Amount (₹)</label>
+            <input type="number" id="fundAmount" placeholder="Amount transferred...">
+        </div>
 
-            <button type="submit" class="btn-submit-payment"><i class="fas fa-check-circle"></i> Submit Payment Proof</button>
-        </form>
-
-        <p style="color: #00ffcc; font-weight: bold; margin-top: 15px; margin-bottom: 20px; font-size: 0.85rem;">⚠️ Double-check your 12-digit UTR number carefully before submission!</p>
-
-        <button class="btn-cancel" onclick="switchView('main-panel')"><i class="fas fa-arrow-left"></i> Return back to Dashboard</button>
+        <button onclick="submitFund()">Submit Transaction Check 🛡️</button>
+        <button class="btn-cancel" onclick="showPage('pageDashboard')">Return to Form 🔙</button>
     </div>
 
-    <!-- ADMIN CONSOLE CENTRALIZED WORKFLOW MONITOR -->
-    <div id="admin-panel" class="container" style="max-width: 700px;">
-        <h1 class="welcome-gradient" style="font-size: 2rem;">Dashboard Order Registry</h1>
-        <p style="color: #aaa; margin-bottom: 20px;">Real-time processing queue data streams</p>
-
-        <div style="overflow-x: auto;">
+    <!-- 💻 SECTION 4: ADMIN DASHBOARD PANEL -->
+    <div id="pageAdmin" class="container">
+        <h2 style="color: #ff007f; font-size: 1.8rem; margin-bottom: 5px;"><i class="fas fa-user-shield"></i> Admin Panel</h2>
+        <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 20px;">Order Flow Management Log</p>
+        
+        <h3 style="color: #00ffcc; font-size: 1rem; text-align: left; margin-bottom: 5px;">📦 Client Orders Submitted</h3>
+        <div style="overflow-x:auto;">
             <table class="admin-table">
                 <thead>
-                    <tr>
-                        <th>ID Reference</th>
-                        <th>Target Target Link</th>
-                        <th>Service Type</th>
-                        <th>Order Volume</th>
-                        <th>Computed Fee</th>
-                        <th>Status Flag</th>
-                    </tr>
+                    <tr><th>User</th><th>Service</th><th>Qty</th><th>Link</th></tr>
                 </thead>
-                <tbody id="admin-queue-rows">
-                    <!-- Dynamic entries render dynamically through client-side state transitions -->
-                </tbody>
+                <tbody id="adminOrdersLog"><tr id="noOrdersRow"><td colspan="4" class="empty-text">No service requests processed yet</td></tr></tbody>
             </table>
         </div>
 
-        <button class="btn-cancel" style="margin-top: 25px;" onclick="switchView('main-panel')"><i class="fas fa-arrow-left"></i> Return back to Dashboard</button>
+        <h3 style="color: #ffbe0b; font-size: 1rem; text-align: left; margin-top: 25px; margin-bottom: 5px;">💳 Fund Deposit Logs</h3>
+        <div style="overflow-x:auto;">
+            <table class="admin-table">
+                <thead>
+                    <tr><th>User</th><th>UTR ID</th><th>Amount</th></tr>
+                </thead>
+                <tbody id="adminFundsLog"><tr id="noFundsRow"><td colspan="3" class="empty-text">No reference receipts filed</td></tr></tbody>
+            </table>
+        </div>
+
+        <button class="btn-cancel" style="margin-top: 25px;" onclick="showPage('pageLogin')">Back to Portal Login 🔙</button>
     </div>
 
     <script>
-        // Global Local In-Memory Order Mock State Store
-        const ordersDataStoreLog = [];
+        // Global variables to hold active tracking states locally
+        let activeUser = "Guest";
+        const ordersDatabase = [];
+        const depositsDatabase = [];
 
-        // Dynamic visual background generation initialization process 
-        function generateAmbientBalloons() {
-            const boundaryLayerContainer = document.getElementById('balloon-container');
-            const colorPaletteHexMap = ['#ff007f', '#7928ca', '#00ffcc', '#ffbe0b', '#00c6ff'];
-            
-            for(let i = 0; i < 15; i++) {
-                const balloonInstance = document.createElement('div');
-                balloonInstance.classList.add('balloon');
-                
-                // Randomized distribution mechanics configuration profiles
-                balloonInstance.style.left = Math.random() * 100 + 'vw';
-                balloonInstance.style.animationDelay = Math.random() * 8 + 's';
-                balloonInstance.style.animationDuration = 6 + Math.random() * 10 + 's';
-                balloonInstance.style.background = colorPaletteHexMap[Math.floor(Math.random() * colorPaletteHexMap.length)];
-                
-                boundaryLayerContainer.appendChild(balloonInstance);
-            }
+        // Background Floating Bubble Generator Array Loop
+        const colors = ['#ff007f', '#00ffcc', '#0072ff', '#ffbe0b', '#ff0055'];
+        for (let i = 0; i < 15; i++) {
+            let balloon = document.createElement('div');
+            balloon.classList.add('balloon');
+            balloon.style.left = Math.random() * 100 + 'vw';
+            balloon.style.animationDelay = Math.random() * 8 + 's';
+            balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.appendChild(balloon);
         }
 
-        // View Routing Component Engine Switcher State Manager
-        function switchView(targetElementId) {
-            document.querySelectorAll('.container').forEach(panelNodeElement => {
-                panelNodeElement.classList.remove('active');
-            });
-            document.getElementById(targetElementId).classList.add('active');
-            
-            if(targetElementId === 'admin-panel') {
-                renderAdministrationTableStream();
-            }
+        // View Router Controller Switching Utilities
+        function showPage(pageId) {
+            document.querySelectorAll('.container').forEach(box => box.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0,0);
         }
 
-        // Intercept and Handle Login Routing Process
-        function handleLoginSubmission(eventContext) {
-            eventContext.preventDefault();
-            const usernameInput = document.getElementById('login-username').value;
-            
-            alert(`Welcome back, ${usernameInput}! Access granted.`);
-            switchView('main-panel');
+        // Live Cost Matrix Calculator
+        function calculatePrice() {
+            const baseRate = parseInt(document.getElementById('serviceSelect').value) || 0;
+            const quantityMultiplier = parseInt(document.getElementById('buyAmount').value) || 0;
+            const finalPrice = baseRate * quantityMultiplier;
+            document.getElementById('totalPriceDisplay').innerText = "₹" + finalPrice;
+            return finalPrice;
         }
 
-        // Realtime cost calculations engine workflow pipelines 
-        function calculateLivePrice() {
-            const selectorElement = document.getElementById('service-select');
-            const unitsInputElement = document.getElementById('quantity-input');
-            const calculatedCostOutputNode = document.getElementById('live-cost');
+        // Authentication Submission Handler
+        function handleLogin(event) {
+            event.preventDefault();
+            activeUser = document.getElementById('username').value.trim() || "User";
+            document.getElementById('displayUser').innerText = activeUser;
+            showPage('pageDashboard');
+            showPopup("🔐 Authorized Successfully! Welcome " + activeUser);
+            calculatePrice();
+        }
 
-            const trackingUnitsVolume = parseInt(unitsInputElement.value) || 0;
-            const selectedOptionNode = selectorElement.options[selectorElement.selectedIndex];
+        // Logout Clear Command
+        function logout() {
+            document.getElementById('loginForm').reset();
+            document.getElementById('serviceLink').value = '';
+            showPage('pageLogin');
+            showPopup("👋 Session closed cleanly");
+        }
 
-            if(!selectedOptionNode || selectedOptionNode.value === "") {
-                calculatedCostOutputNode.innerText = "0.00";
+        // Custom notification banner constructor
+        function showPopup(text) {
+            const popup = document.getElementById('popupBox');
+            popup.innerText = text;
+            popup.classList.add('show');
+            setTimeout(() => popup.classList.remove('show'), 3000);
+        }
+
+        // 📦 Form Processing Submission
+        function triggerOrderPopup() {
+            const link = document.getElementById('serviceLink').value.trim();
+            const qty = parseInt(document.getElementById('buyAmount').value) || 0;
+            const selectElement = document.getElementById('serviceSelect');
+            const serviceName = selectElement.options[selectElement.selectedIndex].getAttribute('data-name');
+            const totalCost = calculatePrice();
+            const numericalAmount = qty * 1000;
+
+            if(!link) {
+                showPopup("❌ Please specify a targeting URL link first!");
                 return;
             }
 
-            const scaleBaseRate = parseFloat(selectedOptionNode.getAttribute('data-price'));
-            const calculatedTotalFeeAccumulator = (trackingUnitsVolume / 1000) * scaleBaseRate;
+            // Append structured object payload to mock tracking database array
+            ordersDatabase.push({ user: activeUser, service: serviceName, quantity: numericalAmount, url: link });
+            updateAdminDashboardLogs();
 
-            calculatedCostOutputNode.innerText = calculatedTotalFeeAccumulator.toFixed(2);
+            showPopup(`📦 Order Saved! ${numericalAmount} views/likes en route for ₹${totalCost}`);
+            document.getElementById('serviceLink').value = ''; // Reset path input field array string
         }
 
-        // Form Submission interceptor processing data logic 
-        function handleOrderSubmission(eventContext) {
-            eventContext.preventDefault();
+        // 💳 Receipts Processing Submission
+        function submitFund() {
+            const utr = document.getElementById('utrInput').value.trim();
+            const cashAmount = document.getElementById('fundAmount').value.trim();
 
-            const targetSelection = document.getElementById('service-select');
-            const profileLinkInput = document.getElementById('target-link').value;
-            const specifiedVolumeAmount = parseInt(document.getElementById('quantity-input').value);
-            const verifiedCalculatedFee = parseFloat(document.getElementById('live-cost').innerText);
-
-            const recordRowObject = {
-                orderId: 'ORD-' + Math.floor(100000 + Math.random() * 900000),
-                destinationUrl: profileLinkInput,
-                serviceLabel: targetSelection.options[targetSelection.selectedIndex].text.split(' ('),
-                volumeAmount: specifiedVolumeAmount,
-                totalCost: verifiedCalculatedFee,
-                executionStatus: 'Processing In Progress'
-            };
-
-            ordersDataStoreLog.push(recordRowObject);
-            alert(`Order successful! Track ID Reference Code: ${recordRowObject.orderId}`);
-            
-            document.getElementById('order-form').reset();
-            document.getElementById('live-cost').innerText = "0.00";
-        }
-
-        // Payment Submission Handling Processing Logic
-        function handlePaymentSubmission(eventContext) {
-            eventContext.preventDefault();
-            const paidAmountValue = document.getElementById('payment-amount').value;
-            const utrNumberValue = document.getElementById('utr-number').value;
-
-            alert(`Payment submitted successfully!\nAmount: ₹${paidAmountValue}\nUTR ID: ${utrNumberValue}\n\nOur admin panel will review and verify your request shortly.`);
-            document.getElementById('payment-verification-form').reset();
-            switchView('main-panel');
-        }
-
-        // Admin Console View Render Generator 
-        function renderAdministrationTableStream() {
-            const tableBodyContainer = document.getElementById('admin-queue-rows');
-            tableBodyContainer.innerHTML = '';
-
-            if(ordersDataStoreLog.length === 0) {
-                tableBodyContainer.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #888;">No active orders found in history register log</td></tr>`;
+            if(!utr || !cashAmount) {
+                showPopup("❌ Please complete both transaction fields!");
                 return;
             }
 
-            ordersDataStoreLog.forEach(orderItem => {
-                const markupTemplateRow = `
-                    <tr>
-                        <td style="color: #00ffcc; font-weight: bold;">${orderItem.orderId}</td>
-                        <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${orderItem.destinationUrl}</td>
-                        <td>${orderItem.serviceLabel}</td>
-                        <td>${orderItem.volumeAmount}</td>
-                        <td style="color: #ff007f; font-weight: bold;">₹${orderItem.totalCost.toFixed(2)}</td>
-                        <td><span style="background: rgba(0, 255, 204, 0.1); color: #00ffcc; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">${orderItem.executionStatus}</span></td>
-                    </tr>
-                `;
-                tableBodyContainer.innerHTML += markupTemplateRow;
-            });
+            // Append structured object validation arrays to tracking system logs
+            depositsDatabase.push({ user: activeUser, utrNumber: utr, cost: cashAmount });
+            updateAdminDashboardLogs();
+
+            showPopup("⏳ UTR verification logged! Admin review pending. 👍");
+            document.getElementById('utrInput').value = '';
+            document.getElementById('fundAmount').value = '';
+            setTimeout(() => showPage('pageDashboard'), 1500);
         }
 
-        // Page Mount initialization entry points
-        window.addEventListener('DOMContentLoaded', () => {
-            generateAmbientBalloons();
-        });
+        // Render runtime elements down into interactive management dashboard grids
+        function updateAdminDashboardLogs() {
+            const ordersBody = document.getElementById('adminOrdersLog');
+            const fundsBody = document.getElementById('adminFundsLog');
+
+            // Render updated rows for user requests
+            if (ordersDatabase.length > 0) {
+                ordersBody.innerHTML = '';
+                ordersDatabase.forEach(item => {
+                    let row = `<tr>
+                        <td><strong>${item.user}</strong></td>
+                        <td>${item.service}</td>
+                        <td>${item.quantity}</td>
+                        <td><a href="${item.url}" target="_blank" style="color:#00ffcc; text-decoration:none;">View Link 🔗</a></td>
+                    </tr>`;
+                    ordersBody.innerHTML += row;
+                });
+            }
+
+            // Render updated logs for fund receipts
+            if (depositsDatabase.length > 0) {
+                fundsBody.innerHTML = '';
+                depositsDatabase.forEach(receipt => {
+                    let row = `<tr>
+                        <td><strong>${receipt.user}</strong></td>
+                        <td><span style="color:#ffbe0b;">${receipt.utrNumber}</span></td>
+                        <td>₹${receipt.cost}</td>
+                    </tr>`;
+                    fundsBody.innerHTML += row;
+                });
+            }
+        }
     </script>
 </body>
 </html>
